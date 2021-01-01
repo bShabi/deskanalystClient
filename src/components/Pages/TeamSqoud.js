@@ -1,10 +1,22 @@
-import React from 'react';
 
-const TeamSqoud = () => {
-  return (
-    <div>
-      <h1>TeamSqoud in app</h1>
-    </div>
-  );
-};
-export default TeamSqoud;
+import React, { Component } from 'react'
+import { withRouter } from "react-router";
+
+class _TeamSqoud extends Component {
+
+  componentDidMount() {
+    const user = JSON.parse(sessionStorage.getItem("loginUser"))
+    if(!user) {
+      this.props.history.push('/')
+    }
+}
+  render() {
+    return (
+      <div>
+        hello
+      </div>
+    )
+  }
+}
+
+export const TeamSqoud = withRouter(_TeamSqoud)

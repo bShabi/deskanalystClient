@@ -1,4 +1,5 @@
 import React , { Fragment, useState }from 'react';
+import { withRouter } from "react-router";
 import {Button} from '@material-ui/core';
 import {Dialog , DialogActions,DialogContent,DialogContentText,DialogTitle} from '@material-ui/core/';
 import DatePicker from 'react-datepicker';
@@ -9,7 +10,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 
-class CreateMatch extends React.Component {
+class _CreateMatch extends React.Component {
   constructor(props) {
     super(props)
     
@@ -47,6 +48,13 @@ class CreateMatch extends React.Component {
   }
   
   componentDidMount() {
+    const user = JSON.parse(sessionStorage.getItem("loginUser"))
+    if(!user) {
+      this.props.history.push('/')
+    }else {
+      this.setState({name: user.teamName})
+    console.log(this.state.name)
+    }
     toast.configure()
     const newDate = new Date().toDateString();
     console.log(newDate)
@@ -65,16 +73,16 @@ class CreateMatch extends React.Component {
       arrData.push(value)
     })
     console.log(this.state.opponentTeam)
-    let isValidDate = true;
+    let isValidData = true;
     for (let value of Object.values(arrData)) {
       if(value == null || String(value).length === 0)
       {
-        isValidDate =false;
+        isValidData =false;
         toast.error("Please inert a value ")
         return
       } 
     }
-    if(isValidDate)
+    if(isValidData)
       this.handleClickOpen()
 
   }
@@ -182,4 +190,4 @@ class CreateMatch extends React.Component {
   );
   }
 };
-export default CreateMatch;
+export const CreateMatch = withRouter(_CreateMatch);

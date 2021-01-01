@@ -1,0 +1,234 @@
+import { TextField, Grid, makeStyles, Button } from '@material-ui/core';
+import React, { useState, useEffect } from 'react';
+import ManagerControl from '../ManagerControl';
+import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
+
+const useStyle = makeStyles((theme) => ({
+  root: {
+    '& .MuiGrid-root': {
+      width: '80%',
+      margin: theme.spacing(2),
+    },
+  },
+}));
+
+class AddAccountPage extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      firstName: null,
+      lastName: null,
+      email: null,
+      password: null,
+      passwordConfirm: null,
+      team: '',
+      allTeam: [],
+      permission: null,
+    };
+    this.changeValue = this.changeValue.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.registerUserToDB = this.registerUserToDB.bind(this);
+    this.getAllTeams = this.getAllTeams.bind(this);
+    this.isUserExist = this.isUserExist.bind(this);
+  }
+  componentDidMount() {
+    this.getAllTeams();
+    toast.configure();
+  }
+  getAllTeams() {
+    axios.get('http://localhost:5000/teams/').then((result) => {
+      const myTeam = [];
+      result.data.forEach((team) => {
+        myTeam.push(team.teamName);
+      });
+      this.setState({
+        allTeam: myTeam,
+      });
+    });
+  }
+  changeValue(name, value) {
+    this.setState({
+      [name]: value,
+    });
+  }
+  handleSubmit(e) {
+    var account = this.state;
+    var arrData = [];
+    Object.entries(account).map(([key, value]) => {
+      arrData.push(value);
+    });
+    for (let value of Object.values(arrData)) {
+      if (value == null || String(value).length === 0) {
+        toast.error('Please inert a value ');
+        return;
+      }
+    }
+    if (this.state.password !== this.state.passwordConfirm) {
+      toast.error('please make sure your password match');
+      return;
+    }
+
+    // check if email not exist
+    var isUserExist = console.log(this.isUserExist());
+    if (!isUserExist) {
+      this.registerUserToDB();
+    } else {
+      toast.warning('User Exist in DB');
+    }
+
+    // document.getElementById("username").style.color = "red";
+    // console.log(this.state)
+    // this.registerUserToDB()
+  }
+  isUserExist() {
+    axios
+      .post('http://localhost:5000/users/login', {
+        email: this.state.email,
+        password: this.state.password,
+      })
+      .then(
+        (response) => {
+          if (response !== null) return false;
+          else return true;
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+  }
+
+  registerUserToDB() {
+    axios
+      .post('http://localhost:5000/users/add', {
+        firstName: this.state.firstName,
+        lastName: this.state.lastName,
+        email: this.state.email,
+        password: Number(this.state.password),
+        teamName: this.state.team,
+        permission: this.state.permission,
+      })
+      .then(
+        (response) => {
+          console.log(response);
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+  }
+
+  render() {
+    const classes = makeStyles((theme) => ({
+      root: {
+        '& .MuiTextField-root': {
+          margin: theme.spacing(1),
+          width: 200,
+        },
+      },
+    }));
+    const teams = this.state.allTeam;
+    return (
+      <>
+        <ManagerControl />
+        <form>
+          <div className='base-container'>
+            <div className='content'>
+              <div className='image'> </div>{' '}
+              <div className='form'>
+                <div className='form-group'>
+                  <label id='username'> First Name </label>{' '}
+                  <input
+                    type='text'
+                    name='firstName'
+                    placeholder='First Name'
+                    onChange={(e) =>
+                      this.changeValue(e.target.name, e.target.value)
+                    }
+                  />{' '}
+                </div>{' '}
+                <div className='form-group'>
+                  <label htmlFor='username'> Last Name </label>{' '}
+                  <input
+                    type='text'
+                    name='lastName'
+                    placeholder='Last name'
+                    onChange={(e) =>
+                      this.changeValue(e.target.name, e.target.value)
+                    }
+                  />{' '}
+                </div>{' '}
+                <div className='form-group'>
+                  <label> Team </label>{' '}
+                  <select
+                    id='team'
+                    name='team'
+                    onChange={(e) =>
+                      this.changeValue(e.target.name, e.target.value)
+                    }>
+                    <option disabled selected value>
+                      Please select a Team{' '}
+                    </option>{' '}
+                    {teams.map((team, index) => (
+                      <option value={team}> {team} </option>
+                    ))}{' '}
+                  </select>{' '}
+                </div>{' '}
+                <div className='form-group'>
+                  <label> Email </label>{' '}
+                  <input
+                    type='text'
+                    name='email'
+                    placeholder='email'
+                    onChange={(e) =>
+                      this.changeValue(e.target.name, e.target.value)
+                    }
+                  />{' '}
+                </div>{' '}
+                <div className='form-group'>
+                  <label> Password </label>{' '}
+                  <input
+                    type='password'
+                    name='password'
+                    placeholder='password'
+                    onChange={(e) =>
+                      this.changeValue(e.target.name, e.target.value)
+                    }
+                  />{' '}
+                </div>{' '}
+                <div className='form-group'>
+                  <label> Confirm Password </label>{' '}
+                  <input
+                    type='password'
+                    name='passwordConfirm'
+                    placeholder='Confirm password'
+                    onChange={(e) =>
+                      this.changeValue(e.target.name, e.target.value)
+                    }
+                  />{' '}
+                </div>{' '}
+                <div className='form-group'>
+                  <label> Permission </label>{' '}
+                  <select
+                    id='permission'
+                    name='permission'
+                    onChange={(e) =>
+                      this.changeValue(e.target.name, e.target.value)
+                    }>
+                    <option value='Coach'> Coach </option>{' '}
+                    <option value='Analyst'> Analyst </option>{' '}
+                  </select>{' '}
+                </div>{' '}
+              </div>{' '}
+            </div>{' '}
+            <button type='button' onClick={this.handleSubmit} className='btn'>
+              Register{' '}
+            </button>{' '}
+          </div>{' '}
+        </form>{' '}
+      </>
+    );
+  }
+}
+
+export default AddAccountPage;

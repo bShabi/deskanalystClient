@@ -1,5 +1,5 @@
 import React from 'react';
-import CreateMatch from './CreateMatch'
+import {CreateMatch} from './CreateMatch'
 
 export const About = () => {
   const myTeam = "Hapoel KIRYAT ONO"

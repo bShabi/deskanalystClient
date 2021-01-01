@@ -1,10 +1,22 @@
-import React from 'react';
 
-const Dashboard = () => {
-  return (
-    <div>
-      <h1>Dashboard in app</h1>
-    </div>
-  );
-};
-export default Dashboard;
+import React, { Component } from 'react'
+import { withRouter } from "react-router";
+
+class _Dashboard extends Component {
+
+  componentDidMount() {
+    const user = JSON.parse(sessionStorage.getItem("loginUser"))
+    if(!user) {
+      this.props.history.push('/')
+    }
+}
+  render() {
+    return (
+      <div>
+        
+      </div>
+    )
+  }
+}
+
+export const Dashboard = withRouter(_Dashboard)
