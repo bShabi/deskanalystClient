@@ -30,7 +30,7 @@ class AddAccountPage extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.registerUserToDB = this.registerUserToDB.bind(this);
     this.getAllTeams = this.getAllTeams.bind(this);
-    this.isUserExist = this.isUserExist.bind(this);
+    this.getUserByEmail = this.getUserByEmail.bind(this);
   }
   componentDidMount() {
     this.getAllTeams();
@@ -68,45 +68,37 @@ class AddAccountPage extends React.Component {
       toast.error('please make sure your password match');
       return;
     }
+    //async 
+    this.getUserByEmail().then((response) => {
+      if (response.data === null) {
+        this.registerUserToDB();
+        toast.success("user save to DB successfly")
+      } else {
+        toast.warning("user already exist")
+      }
 
-    // check if email not exist
-    var isUserExist = console.log(this.isUserExist());
-    if (!isUserExist) {
-      this.registerUserToDB();
-    } else {
-      toast.warning('User Exist in DB');
-    }
+    })
 
-    // document.getElementById("username").style.color = "red";
-    // console.log(this.state)
-    // this.registerUserToDB()
   }
-  isUserExist() {
-    axios
-      .post('http://localhost:5000/users/login', {
-        email: this.state.email,
-        password: this.state.password,
+
+  getUserByEmail() {
+    return axios
+      .get('http://localhost:5000/users/find/' + this.state.email, {
       })
-      .then(
-        (response) => {
-          if (response !== null) return false;
-          else return true;
-        },
-        (error) => {
-          console.log(error);
-        }
-      );
   }
 
   registerUserToDB() {
+    console.log(this.state)
     axios
       .post('http://localhost:5000/users/add', {
+
         firstName: this.state.firstName,
         lastName: this.state.lastName,
         email: this.state.email,
-        password: Number(this.state.password),
+        password: this.state.password,
         teamName: this.state.team,
         permission: this.state.permission,
+
       })
       .then(
         (response) => {
@@ -170,7 +162,7 @@ class AddAccountPage extends React.Component {
                       Please select a Team{' '}
                     </option>{' '}
                     {teams.map((team, index) => (
-                      <option value={team}> {team} </option>
+                      <option key={index} value={team}> {team} </option>
                     ))}{' '}
                   </select>{' '}
                 </div>{' '}
@@ -215,6 +207,9 @@ class AddAccountPage extends React.Component {
                     onChange={(e) =>
                       this.changeValue(e.target.name, e.target.value)
                     }>
+                    <option disabled selected value>
+                      Please select a permission{' '}
+                    </option>
                     <option value='Coach'> Coach </option>{' '}
                     <option value='Analyst'> Analyst </option>{' '}
                   </select>{' '}

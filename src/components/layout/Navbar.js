@@ -7,6 +7,7 @@ export default class Navbar extends Component {
     super(props);
     const user = JSON.parse(sessionStorage.getItem('loginUser'));
     const permssion = user ? user.permission : ' ';
+
     this.state = {
       title: 'DeskAnalyst System',
       icon: 'fa fa-futbol',
@@ -15,7 +16,7 @@ export default class Navbar extends Component {
   }
 
   render() {
-    const { icon, teamName, title } = this.state;
+    const { icon, teamName, title, permssionUser } = this.state;
     return (
       <nav className='navbar bg-primary'>
         <h1>
@@ -55,7 +56,7 @@ export default class Navbar extends Component {
               Match{' '}
             </NavLink>{' '}
           </li>{' '}
-         { this.state.permssionUser === 'Owner' && <li>
+          {(permssionUser === 'Owner' || permssionUser === 'Analyst') && <li>
             <NavLink
               to='/CreateMatch'
               exact
@@ -63,17 +64,16 @@ export default class Navbar extends Component {
                 color: 'blue',
               }}>
               {' '}
-              Create - Match{' '}
+              Create Match{' '}
             </NavLink>
           </li>}
-          { this.state.permssionUser === 'Owner' && <li>
+          {permssionUser === 'Owner' && <li>
             <NavLink
               to='/Manager'
               exact
               activeStyle={{
                 color: 'blue',
               }}>
-              {' '}
               Manager
             </NavLink>
           </li>}
