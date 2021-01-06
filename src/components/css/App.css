@@ -22,8 +22,9 @@ body {
   /* background-image: url("pitch.jpg"); */
   /* height: 1000px; /* You must set a specified height */
   /* background-position: center; /* Center the image */
- /* background-repeat: no-repeat; /* Do not repeat the image */
- /* background-size: cover; /* Resize the background image to cover the entire container */  color: #333;
+  /* background-repeat: no-repeat; /* Do not repeat the image */
+  /* background-size: cover; /* Resize the background image to cover the entire container */
+  color: #333;
 }
 
 a {
@@ -31,7 +32,10 @@ a {
   text-decoration: none;
 }
 code {
-  font-family: sorce-code-pro,Menlo,Moncao,Consolas,"Courier New",monospace;
+  font-family: sorce-code-pro, Menlo, Moncao, Consolas, 'Courier New', monospace;
+}
+.MuiGridListTileBar-root {
+  background: #253053;
 }
 .side-menu {
   display: flex;
@@ -80,7 +84,7 @@ img {
   margin-bottom: 1rem;
 }
 .form-group {
-  color: none
+  color: none;
 }
 .text-center {
   text-align: center;

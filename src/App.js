@@ -12,10 +12,10 @@ import { LoginPage } from './components/Pages/LoginPage';
 import RegisterUser from './components/Pages/RegisterUser';
 import ManagerControl from './components/Pages/Manger/ManagerControl';
 import AddUser from './components/Pages/Manger/Account/AddAccountPage';
-import RemoveUser from './components/Pages/Manger/Account/RemoveAccountPage';
+import { RemoveAccountPage } from './components/Pages/Manger/Account/RemoveAccountPage';
 import UpdateUser from './components/Pages/Manger/ManagerControl';
 import { AddTeamPage } from './components/Pages/Manger/Team/AddTeamPage';
-
+import { RemoveTeamsPage } from './components/Pages/Manger/Team/DeleteTeamPage'
 
 
 
@@ -34,7 +34,7 @@ const App = () => {
             <Route exact path='/' component={LoginPage} />
             <Route exact path='/Manager' component={ManagerControl} />
             <Route exact path='/Manager/AddUser' component={AddUser} />
-            <Route exact path='/Manager/RemoveUser' component={RemoveUser} />
+            <Route exact path='/Manager/RemoveUser' component={RemoveAccountPage} />
             <Route
               exact
               path='/Manager/UpdateUser'
@@ -47,6 +47,7 @@ const App = () => {
             />
             <Route exact path='/TeamSqoud' component={TeamSqoud} />
             <Route exact path='/Manager/AddTeam' component={AddTeamPage} />
+            <Route exact path='/Manager/RemoveTeam' component={RemoveTeamsPage} />
 
             <Route exact path='/Match' component={Match} />
             <Route

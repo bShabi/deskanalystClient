@@ -40,7 +40,7 @@ class AddAccountPage extends React.Component {
     axios.get('http://localhost:5000/teams/').then((result) => {
       const myTeam = [];
       result.data.forEach((team) => {
-        myTeam.push(team.teamName);
+        myTeam.push({ key: team._id, value: team.teamName });
       });
       this.setState({
         allTeam: myTeam,
@@ -96,7 +96,7 @@ class AddAccountPage extends React.Component {
         lastName: this.state.lastName,
         email: this.state.email,
         password: this.state.password,
-        teamName: this.state.team,
+        team: this.state.team,
         permission: this.state.permission,
 
       })
@@ -162,7 +162,7 @@ class AddAccountPage extends React.Component {
                       Please select a Team{' '}
                     </option>{' '}
                     {teams.map((team, index) => (
-                      <option key={index} value={team}> {team} </option>
+                      <option key={index} value={team.key}> {team.value} </option>
                     ))}{' '}
                   </select>{' '}
                 </div>{' '}

@@ -1,61 +1,63 @@
-import React, { Component ,  Fragment } from 'react'
+import React, { Component, Fragment } from 'react'
 import SideMenu from './SideMenu'
-import { makeStyles,CssBaseline , ThemeProvider, createMuiTheme, Paper, Button} from '@material-ui/core'
+import { makeStyles, CssBaseline, ThemeProvider, createMuiTheme, Paper } from '@material-ui/core'
+import Grid from '@material-ui/core/Grid';
+import Button from '@material-ui/core/Button';
+import Tooltip from '@material-ui/core/Tooltip';
 import PageHeader from './PageHeader';
 import GroupAddIcon from '@material-ui/icons/GroupAdd';
 import AccountPage from './Account/AccountPage';
 import TeamPage from './Team/TeamPage';
 
 
-
-
-const theme = createMuiTheme( {
-    palette: {
-        primary:{
-            main: '#333996',
-            light: '#3c44b126'
-        },
-        secondary: {
-            main: '#f83245',
-            light: '#f8324526'
-        },
-        background: {
-            default: '#fffff'
-        },
-    },
-    shape: {
-        borderRadius: '12px'
-    },
-})
-const useStyles = makeStyles({
-    appMain: {
-        paddingLeft: '150px',
-        width: '100%',
+class ManagerControl extends Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            showPage: 'Accounts'
+        }
     }
-})
+    render() {
+        return (
+            <>
+                <section>
+                    <ThemeProvider >
+                        <div style={{ textAlign: 'center' }} >
+                            <PageHeader
+                                title="Account"
+                                page={<AccountPage />}
+                            />
+                            <PageHeader
+                                title="Team"
+                                page={<TeamPage />} />
+                        </div>
+                    </ThemeProvider>
+                </section>
 
 
-
-function ManagerControl() {
-    const classes = useStyles();
-    
-
-    return (
-        <ThemeProvider theme={theme}>
-             <div className={classes.appMain}>
-             <PageHeader
-                title="Account"
-                page={<AccountPage/>}
-                />
-            <PageHeader
-            title="Team"
-            page={<TeamPage/>}/>
-            </div>
-        </ThemeProvider>
-   
-
-
-    )
+            </>
+        )
+    }
 }
+/*
+<section>
+<Grid item style={{ textAlign: 'center' }}>
+    <Tooltip title="Add" placement="top-start">
+        <Button >Accounts</Button>
+    </Tooltip>
+    {/* <Tooltip title="Add" placement="top">
+    <Button>top</Button>
+</Tooltip> 
+    <Tooltip title="Add" placement="top-end">
+        <Button>Teams</Button>
+    </Tooltip>
+</Grid>
+</section>
+{this.state.showPage === 'Accounts' &&
+<AccountPage />
+}
+{this.state.showPage === 'Teams' &&
+<TeamPage />
+}
+*/
 export default ManagerControl
-

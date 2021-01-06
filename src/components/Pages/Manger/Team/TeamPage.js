@@ -93,7 +93,7 @@ export default function TeamPage() {
       }
       {
         removeTeamPage ? <Redirect to={{
-          pathname: '/Manager/RemoveUser',
+          pathname: '/Manager/RemoveTeam',
         }} /> : null
       }
       {
