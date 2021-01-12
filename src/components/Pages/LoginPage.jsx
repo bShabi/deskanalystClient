@@ -19,9 +19,9 @@ class _LoginPage extends React.Component {
   }
   componentDidMount() {
     const user = JSON.parse(sessionStorage.getItem("loginUser"))
-    if(user) {
+    if (user) {
       this.props.history.push('/Dashboard')
-    }    toast.configure();
+    } toast.configure();
   }
 
   onChange(name, value) {
@@ -104,7 +104,8 @@ class _LoginPage extends React.Component {
     );
   }
 }
+
 export function nameTeam() {
-	return this.state.nameTeam
+  return this.state.nameTeam
 }
 export const LoginPage = withRouter(_LoginPage);

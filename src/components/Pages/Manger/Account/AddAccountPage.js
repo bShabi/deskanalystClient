@@ -210,8 +210,10 @@ class AddAccountPage extends React.Component {
                     <option disabled selected value>
                       Please select a permission{' '}
                     </option>
-                    <option value='Coach'> Coach </option>{' '}
-                    <option value='Analyst'> Analyst </option>{' '}
+                    <option value='Coach'> Coach </option>
+                    <option value='Analyst'> Analyst </option>
+                    <option value='Owner'> Owner </option>
+
                   </select>{' '}
                 </div>{' '}
               </div>{' '}

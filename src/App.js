@@ -5,7 +5,7 @@ import Alert from './components/layout/Alert';
 import { TeamSqoud } from './components/Pages/TeamSqoud';
 import { Match } from './components/Pages/Match';
 import { CreateMatch } from './components/Pages/CreateMatch';
-import { Dashboard } from './components/Pages/Dashboard';
+import { Home } from './components/Pages/Home';
 import './components/css/App.css';
 import ShowPlayers from './components/Pages/ShowPlayers';
 import { LoginPage } from './components/Pages/LoginPage';
@@ -55,7 +55,7 @@ const App = () => {
               path='/CreateMatch'
               component={() => <CreateMatch />}
             />
-            <Route exact path='/Dashboard' component={Dashboard} />
+            <Route exact path='/Home' component={Home} />
             <Route exact path='/Test' component={CreateMatch} />
             <Route exact path='/ShowPlayers' component={ShowPlayers} />
             <Route exact path='/LoginPage' component={LoginPage} />

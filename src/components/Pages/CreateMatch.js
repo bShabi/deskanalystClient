@@ -8,34 +8,40 @@ import "../css/CreateMatch.css";
 import FileReader from './FileReader';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Moment from 'react-moment';
+import 'moment-timezone';
+import moment from 'moment';
 
 
 class _CreateMatch extends React.Component {
   constructor(props) {
     super(props)
+    // const user = JSON.parse(sessionStorage.getItem("loginUser"))
+    // const teamName = user ? user.teamName : null;
 
     this.state = {
-      name: this.props.nameTeam,
-      opponentTeam: null,
+      teamid: null,
+      myTeamName: "",
+      opponentTeam: "null",
       gameDate: null,
-      myTeamHalfScore: null,
-      anotherHalfScore: null,
-      myTeamFinalScore: null,
-      anotherFinalScore: null,
-      shotOnTargetHalfOne: null,
-      shotOnTargetHalfTwo: null,
-      shotOFFTargetHalfOne: null,
-      shotOFFTargetHalfTwo: null,
-      corrnerHalfOne: null,
-      corrnerHalfTwo: null,
-      offsidesHalfOne: null,
-      offsidesHalfTwo: null,
-      tackelsHalfOne: null,
-      tackelsHalfTwo: null,
-      stealHalfOne: null,
-      stealHalfTwo: null,
-      lostPossessionHalfOne: null,
-      lostPossessionHalfTwo: null,
+      myTeamHalfScore: 2,
+      anotherHalfScore: 2,
+      myTeamFinalScore: 2,
+      anotherFinalScore: 2,
+      shotOnTargetHalfOne: 2,
+      shotOnTargetHalfTwo: 2,
+      shotOFFTargetHalfOne: 2,
+      shotOFFTargetHalfTwo: 2,
+      corrnerHalfOne: 2,
+      corrnerHalfTwo: 2,
+      offsidesHalfOne: 2,
+      offsidesHalfTwo: 2,
+      tackelsHalfOne: 2,
+      tackelsHalfTwo: 2,
+      stealHalfOne: 2,
+      stealHalfTwo: 2,
+      lostPossessionHalfOne: 2,
+      lostPossessionHalfTwo: 2,
       validData: false,
       dialogMsg: false
 
@@ -52,18 +58,19 @@ class _CreateMatch extends React.Component {
     if (!user) {
       this.props.history.push('/')
     } else {
-      this.setState({ name: user.teamName })
-      console.log(this.state.name)
+      this.setState({ myTeamName: user.teamName, teamid: user.teamid })
+      console.log(this.state.myTeamName)
     }
     toast.configure()
-    const newDate = Date.parse(new Date().toDateString());
-    console.log(newDate)
-    this.setState({ gameDate: newDate })
+
+    var date = moment().format('MM/DD/yyyy')
+    // const newDate = Date.parse(new Date(Date.now()).toLocaleString());
+    console.log(date)
+    this.setState({ gameDate: date })
   }
 
   insertDeitals(name, value) {
     this.setState({ [name]: value });
-
   }
 
   handleSubmit = (event) => {
@@ -72,7 +79,7 @@ class _CreateMatch extends React.Component {
     Object.entries(gameData).map(([key, value]) => {
       arrData.push(value)
     })
-    console.log(this.state.opponentTeam)
+    console.log(this.state)
     let isValidData = true;
     for (let value of Object.values(arrData)) {
       if (value == null || String(value).length === 0) {
@@ -109,34 +116,39 @@ class _CreateMatch extends React.Component {
       <Fragment>
         <h1>Create Match
        <DatePicker
-            selected={this.state.gameDate}
+            dateFormat="dd/MM/yyyy"
+            selected={new Date(this.state.gameDate)}
             onChange={date => {
-              var currentDate = Date.parse(new Date(date).toDateString());
-              console.log(currentDate)
-              this.setState({ gameDate: currentDate })
+              console.log(moment(date).format('MM/DD/yyyy'))
+              this.setState({ gameDate: moment(date).format('MM/DD/yyyy') })
             }}
-            dateFormat='dd/MM/yyyy'
           />
         </h1>
         <label >
           {/* Game information */}
           <table style={{ width: '100%' }}>
-            <th></th>
-            <th> {this.state.name}</th>
-            <th> VS </th>
-            <th> <input type="text" name="opponentTeam" size="8" placeholder="Example:Macbi tel aviv" onChange={(e) => this.insertDeitals(e.target.name, e.target.value)}></input> </th>
+            <thead>
+              <tr>
+                <th></th>
+                <th> {this.state.myTeamName}</th>
+                <th> VS </th>
+                <th> <input type="text" name="opponentTeam" size="8" placeholder="Example:Macbi tel aviv" onChange={(e) => this.insertDeitals(e.target.name, e.target.value)}></input> </th>
+              </tr>
+            </thead>
+
+
             <tbody>
               <tr>
                 <td></td>
-                <td> <input type="number" name="myTeamHalfScore" min="0" max="10" onChange={(e) => this.insertDeitals(e.target.name, e.target.value)}></input></td>
+                <td> <input type="number" defaultValue={0} name="myTeamHalfScore" min="0" max="10" onChange={(e) => this.insertDeitals(e.target.name, e.target.value)}></input></td>
                 <td>Half Score</td>
-                <td> <input type="number" name="anotherHalfScore" min="0" max="10" onChange={(e) => this.insertDeitals(e.target.name, e.target.value)}></input> </td>
+                <td> <input type="number" defaultValue={0} name="anotherHalfScore" min="0" max="10" onChange={(e) => this.insertDeitals(e.target.name, e.target.value)}></input> </td>
               </tr>
               <tr>
                 <td></td>
-                <td> <input type="number" name="myTeamFinalScore" min="0" max="10" onChange={(e) => this.insertDeitals(e.target.name, e.target.value)}></input> </td>
+                <td> <input type="number" defaultValue={0} name="myTeamFinalScore" min="0" max="10" onChange={(e) => this.insertDeitals(e.target.name, e.target.value)}></input> </td>
                 <td>Final Score</td>
-                <td> <input type="number" name="anotherFinalScore" min="0" max="10" onChange={(e) => this.insertDeitals(e.target.name, e.target.value)} ></input> </td>
+                <td> <input type="number" defaultValue={0} name="anotherFinalScore" min="0" max="10" onChange={(e) => this.insertDeitals(e.target.name, e.target.value)} ></input> </td>
               </tr>
             </tbody>
           </table>
@@ -144,20 +156,25 @@ class _CreateMatch extends React.Component {
           {/* Static Game */}
           <table style={{ width: '100%' }} >
 
+            <thead>
+              <tr>
+                <th></th>
+                <th>Half 1</th>
+                <th></th>
+                <th>Half 2</th>
+              </tr>
 
-            <td></td>
-            <td>Half 1</td>
-            <td></td>
-            <td>Half 2</td>
+            </thead>
+
             <tbody>
               {Object.entries(matchDictionary)
                 .map(([key, value]) =>
                 (
                   <tr key={key}>
                     <td></td>
-                    <td><input type="number" name={value[0]} min="0" max="30" onChange={(e) => this.insertDeitals(e.target.name, e.target.value)}></input></td>
+                    <td><input type="number" defaultValue={0} name={value[0]} min="0" max="30" onChange={(e) => this.insertDeitals(e.target.name, e.target.value)}></input></td>
                     <td>{key}</td>
-                    <td><input type="number" name={value[1]} min="0" max="30" onChange={(e) => this.insertDeitals(e.target.name, e.target.value)}></input></td>
+                    <td><input type="number" defaultValue={0} name={value[1]} min="0" max="30" onChange={(e) => this.insertDeitals(e.target.name, e.target.value)}></input></td>
                   </tr>
                 ))}
             </tbody>

@@ -24,25 +24,25 @@ export default class Navbar extends Component {
   }
 
   render() {
-    const { icon, firstName ,lastName, title, permssionUser } = this.state;
+    const { icon, firstName, lastName, title, permssionUser } = this.state;
     console.log(this.state)
     return (
       <nav className='navbar bg-primary'>
         <h4>
           <i className={icon} /> {title}
         </h4>
-        {firstName && 
-        <span> Hello  {firstName} {lastName}, [ {permssionUser} ] </span>
+        {firstName &&
+          <span> Hello  {firstName} {lastName}, [ {permssionUser} ] </span>
         }
         <ul>
           <li>
             <NavLink
-              to='/Dashboard'
+              to='/home'
               exact
               activeStyle={{
                 color: 'blue',
               }}>
-              
+
               Home
             </NavLink>
           </li>
@@ -53,7 +53,7 @@ export default class Navbar extends Component {
               activeStyle={{
                 color: 'blue',
               }}>
-              
+
               Team Sqoud
             </NavLink>
           </li>
@@ -64,7 +64,7 @@ export default class Navbar extends Component {
               activeStyle={{
                 color: 'blue',
               }}>
-              
+
               Match
             </NavLink>
           </li>
@@ -76,35 +76,35 @@ export default class Navbar extends Component {
                 activeStyle={{
                   color: 'blue',
                 }}>
-                
+
                 Create Match
               </NavLink>
             </li>
           )}
           {permssionUser === 'Owner' && (
             <li>
-            <NavLink
+              <NavLink
                 to='/Manager'
                 exact
                 activeStyle={{
                   color: 'blue',
                 }}>
-                
+
                 Manager
-              </NavLink>     
-                     </li>
+              </NavLink>
+            </li>
           )}
           {permssionUser && (
-            <IconButton 
-            onClick={() => {
-              sessionStorage.clear()
-              this.setState({permssionUser: null})
-              window.location.reload(false);
-}}
+            <IconButton
+              onClick={() => {
+                sessionStorage.clear()
+                this.setState({ permssionUser: null })
+                window.location.reload(false);
+              }}
             >
-            <ExitToAppIcon />
+              <ExitToAppIcon />
             </IconButton>
-          
+
 
           )}
         </ul>
