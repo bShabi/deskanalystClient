@@ -379,7 +379,10 @@ table td {
 table th {
   background: var(--light-color);
 }
-
+th,
+td {
+  border-bottom: 1px solid #ddd;
+}
 /* Navbar */
 .navbar {
   display: flex;

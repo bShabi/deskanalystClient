@@ -100,9 +100,9 @@ class ShowPlayers extends Component {
     axios.post('http://localhost:5000/games/add', body, config)
       .then(
         (response) => {
-          var gameIDCreate = response.data
-          console.log(gameIDCreate)
-          this.insertPlayersDataToDB(gameIDCreate)
+          var gameIDCreate = response.data._id
+          var teamID = response.data.teamid
+          this.insertPlayersDataToDB(gameIDCreate, teamID)
         },
         (error) => {
           console.log(error);
@@ -124,12 +124,15 @@ class ShowPlayers extends Component {
     });
   }
 
-  insertPlayersDataToDB(GameID) {
-    alert(GameID)
+  insertPlayersDataToDB(gameID, teamID) {
+    alert(gameID)
+    alert(teamID)
+
     var { players } = this.state
     players.forEach(player => {
       this.replaceKeys(player)
-      player.gameID = GameID
+      player.gameID = gameID
+      player.teamID = teamID
     })
 
     players.forEach(player => {
@@ -140,6 +143,7 @@ class ShowPlayers extends Component {
         .then(
           (response) => {
             console.log(response)
+            this.props.history.push('/Match')
           },
           (error) => {
             console.log(error);
