@@ -1,7 +1,7 @@
 import React, { Fragment, useState } from 'react';
 import { withRouter } from "react-router";
 import { Button } from '@material-ui/core';
-import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@material-ui/core/';
+import { Paper, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@material-ui/core/';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import "../css/CreateMatch.css";
@@ -11,6 +11,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import Moment from 'react-moment';
 import 'moment-timezone';
 import moment from 'moment';
+import Stepper from 'react-stepper-horizontal'
 
 
 class _CreateMatch extends React.Component {
@@ -74,6 +75,7 @@ class _CreateMatch extends React.Component {
   }
 
   handleSubmit = (event) => {
+    event.preventDefault()
     var gameData = this.state;
     var arrData = []
     Object.entries(gameData).map(([key, value]) => {
@@ -113,19 +115,26 @@ class _CreateMatch extends React.Component {
     }
 
     return (
+
       <Fragment>
-        <h1>Create Match
+        <section>
+          <Stepper steps={[{ title: 'Insert deitals form Game' }, { title: 'Upload csv File' }, { title: 'Insert player deitals ' }]} activeStep={0} />
+
+        </section>
+        <section>
+          <h1>Create Match
        <DatePicker
-            dateFormat="dd/MM/yyyy"
-            selected={new Date(this.state.gameDate)}
-            onChange={date => {
-              console.log(moment(date).format('MM/DD/yyyy'))
-              this.setState({ gameDate: moment(date).format('MM/DD/yyyy') })
-            }}
-          />
-        </h1>
-        <label >
-          {/* Game information */}
+              dateFormat="dd/MM/yyyy"
+              selected={new Date(this.state.gameDate)}
+              onChange={date => {
+                console.log(moment(date).format('MM/DD/yyyy'))
+                this.setState({ gameDate: moment(date).format('MM/DD/yyyy') })
+              }}
+            />
+          </h1>
+        </section>
+        {/* Game information */}
+        <form>
           <table style={{ width: '100%' }}>
             <thead>
               <tr>
@@ -135,7 +144,6 @@ class _CreateMatch extends React.Component {
                 <th> <input type="text" name="opponentTeam" size="8" placeholder="Example:Macbi tel aviv" onChange={(e) => this.insertDeitals(e.target.name, e.target.value)}></input> </th>
               </tr>
             </thead>
-
 
             <tbody>
               <tr>
@@ -152,7 +160,9 @@ class _CreateMatch extends React.Component {
               </tr>
             </tbody>
           </table>
+        </form>
 
+        <form>
           {/* Static Game */}
           <table style={{ width: '100%' }} >
 
@@ -178,11 +188,11 @@ class _CreateMatch extends React.Component {
                   </tr>
                 ))}
             </tbody>
-
           </table>
           <button onClick={this.handleSubmit} className="btn btn-primary">Submit</button>
+        </form>
 
-        </label>
+
         <Dialog
           open={this.state.dialogMsg}
           onClose={this.handleClose}

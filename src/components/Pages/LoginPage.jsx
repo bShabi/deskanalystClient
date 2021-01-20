@@ -29,12 +29,13 @@ class _LoginPage extends React.Component {
       [name]: value,
     });
   }
-  onSubmit() {
-    axios
-      .post('http://localhost:5000/users/login', {
-        email: this.state.email,
-        password: this.state.password,
-      })
+  onSubmit(e) {
+    e.preventDefault()
+
+    axios.post('http://localhost:5000/users/login', {
+      email: this.state.email,
+      password: this.state.password,
+    })
       .then(
         (response) => {
           console.log(response);
@@ -62,7 +63,7 @@ class _LoginPage extends React.Component {
     return (
       <form action='onSubmit'>
         <div className='base-container'>
-          <div className='header'> </div>{' '}
+          <div className='header'> </div>
           <div className='content'>
             <div className='image'>
               <img
@@ -71,35 +72,35 @@ class _LoginPage extends React.Component {
                   width: '50%',
                   height: '50%',
                 }}
-              />{' '}
-            </div>{' '}
+              />
+            </div>
             <div className='form'>
               <div className='form-group'>
-                <label htmlFor='username'> Username </label>{' '}
+                <label htmlFor='username'> Username </label>
                 <input
                   type='text'
                   name='email'
                   placeholder='Email'
                   onChange={(e) => this.onChange(e.target.name, e.target.value)}
-                />{' '}
-              </div>{' '}
+                />
+              </div>
               <div className='form-group'>
-                <label htmlFor='password'> Password </label>{' '}
+                <label htmlFor='password'> Password </label>
                 <input
                   type='password'
                   name='password'
                   placeholder='Password'
                   onChange={(e) => this.onChange(e.target.name, e.target.value)}
-                />{' '}
-              </div>{' '}
-            </div>{' '}
+                />
+              </div>
+            </div>
           </div>
           <div className='footer'>
             <button onClick={this.onSubmit} type='button' className='btn'>
-              Login{' '}
-            </button>{' '}
-          </div>{' '}
-        </div>{' '}
+              Login
+            </button>
+          </div>
+        </div>
       </form>
     );
   }

@@ -74,7 +74,7 @@ class ShowPlayers extends Component {
 
   }
   handleSubmit(e) {
-    var { players } = this.state
+    var { players, game, maxScore } = this.state
     var isValid = true
     players.forEach(elm => {
       if (elm["position"] === null && isValid) {
@@ -83,6 +83,10 @@ class ShowPlayers extends Component {
         return
       }
     })
+    if (!(maxScore - parseInt(game.myTeamFinalScore) === 0)) {
+      toast.warning("Set goal in  match")
+      isValid = !isValid
+    }
     if (isValid)
       this.insertGameDataToDB()
   }
@@ -125,8 +129,7 @@ class ShowPlayers extends Component {
   }
 
   insertPlayersDataToDB(gameID, teamID) {
-    alert(gameID)
-    alert(teamID)
+
 
     var { players } = this.state
     players.forEach(player => {

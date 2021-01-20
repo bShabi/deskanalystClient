@@ -19,14 +19,28 @@ body {
   font-family: 'Roboto', sans-serif;
   font-size: 1rem;
   line-height: 1.6;
-  /* background-image: url("pitch.jpg"); */
-  /* height: 1000px; /* You must set a specified height */
-  /* background-position: center; /* Center the image */
-  /* background-repeat: no-repeat; /* Do not repeat the image */
-  /* background-size: cover; /* Resize the background image to cover the entire container */
-  color: #333;
+  background-image: url('pitch.jpg');
+  height: 1000px; /*You must set a specified height */
+  background-position: center; /* Center the image*/
+  background-repeat: no-repeat; /* Do not repeat the image */
+  background-size: cover; /*Resize the background image to cover the entire container */
+  color: rgb(228, 228, 228);
+}
+.MuiDialog-paper {
+  /* background-image: url('dialog.jpg'); */
+  background-position: center; /* Center the image*/
+  background-repeat: no-repeat; /* Do not repeat the image */
+  background-size: cover; /*Resize the background image to cover the entire container*/
+  font-size: 1rem;
+
+  color: rgb(228, 228, 228);
 }
 
+.MuiDataGrid-mainGridContainer {
+  color: rgb(228, 228, 228);
+  font-size: 1rem;
+  font-family: sans-serif;
+}
 a {
   color: var(--primary-color);
   text-decoration: none;
@@ -229,7 +243,18 @@ img {
   grid-template-columns: repeat(4, 1fr);
   grid-gap: 1rem;
 }
-
+.btn-Remove {
+  display: inline-block;
+  background: var(--light-color);
+  color: red;
+  padding: 0.4rem 1.3rem;
+  font-size: 1rem;
+  border: none;
+  cursor: pointer;
+  margin-right: 0.5rem;
+  transition: opacity 0.2s ease-in;
+  outline: none;
+}
 .btn {
   display: inline-block;
   background: var(--light-color);
@@ -424,7 +449,10 @@ td {
   .grid-4 {
     grid-template-columns: 1fr;
   }
-
+  .MuiGridListTileBar-actionIcon {
+    color: #086da7;
+    background: #253053;
+  }
   /* Text Styles */
   .x-large {
     font-size: 3rem;
@@ -447,5 +475,8 @@ td {
   .navbar ul {
     text-align: center;
     justify-content: center;
+  }
+  .main-nav li {
+    margin: 0;
   }
 }

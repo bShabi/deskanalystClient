@@ -3,6 +3,7 @@ import axios from 'axios'
 import {
     DataGrid,
 } from "@material-ui/data-grid";
+import { getGamesByGameId, getPlayersInGame } from '../until/httpService'
 
 export default class ShowSpecificGame extends Component {
     constructor(props) {
@@ -14,20 +15,18 @@ export default class ShowSpecificGame extends Component {
             gameInfo: [],
             avgStats: []
         }
-        this.getPlayers = this.getPlayers.bind(this)
         this.setIDPlayer = this.setIDPlayer.bind(this)
-        this.getGames = this.getGames.bind(this)
     }
     componentDidMount() {
         const { gameID, players } = this.state
-        this.getPlayers(gameID).then((result) => {
+        getPlayersInGame(gameID).then((result) => {
             if (result) {
                 this.setState({ players: result.data })
             }
         }).catch((err) => {
             console.log(err)
         })
-        this.getGames(gameID).then((result) => {
+        getGamesByGameId(gameID).then((result) => {
             if (result) {
                 console.log(result.data)
                 this.setState({ gameInfo: result.data[0] })
@@ -38,12 +37,7 @@ export default class ShowSpecificGame extends Component {
         })
 
     }
-    getPlayers(gameID) {
-        return axios.get('http://localhost:5000/players/find/' + gameID)
-    }
-    getGames(gameID) {
-        return axios.get('http://localhost:5000/games/findgame/' + gameID)
-    }
+
 
     setIDPlayer(players) {
         console.log(players)
@@ -53,7 +47,7 @@ export default class ShowSpecificGame extends Component {
     }
     render() {
         const { players, gameInfo, avgStats } = this.state
-        console.log(avgStats)
+        console.log(gameInfo)
 
         return (
             <>

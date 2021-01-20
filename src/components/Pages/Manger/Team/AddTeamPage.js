@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { withRouter } from "react-router";
 import ManagerControl from '../ManagerControl'
 import axios from 'axios';
+import { registerTeamToDB, getAllUsers } from '../../../until/httpService'
 import { toast } from 'react-toastify';
 
 
@@ -14,10 +15,8 @@ class _AddTeamPage extends Component {
       analyst: ""
     }
     this.changeValue = this.changeValue.bind(this)
-    this.getAllAnalyst = this.getAllAnalyst.bind(this)
     this.changeValue = this.changeValue.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
-    this.registerTeamToDB = this.registerTeamToDB.bind(this)
   }
   changeValue(name, value) {
     this.setState({
@@ -26,8 +25,7 @@ class _AddTeamPage extends Component {
   }
   componentDidMount() {
     toast.configure()
-    console.log("retrey")
-    this.getAllAnalyst().then((result => {
+    getAllUsers().then((result => {
       const myUsers = [];
       result.data.forEach((user) => {
         if (user.permission === "Analyst")
@@ -42,11 +40,7 @@ class _AddTeamPage extends Component {
   }
 
 
-  getAllAnalyst() {
-    return axios.get('http://localhost:5000/users/', {
 
-    })
-  }
   changeValue(name, value) {
     this.setState({
       [name]: value,
@@ -54,7 +48,8 @@ class _AddTeamPage extends Component {
   }
 
   handleSubmit() {
-    this.registerTeamToDB().then((response) => {
+    const { teamName } = this.state
+    registerTeamToDB(teamName).then((response) => {
       console.log(response)
       if (response.data != null) {
         toast.clearWaitingQueue()
@@ -65,21 +60,18 @@ class _AddTeamPage extends Component {
       }
 
     })
+    setTimeout(() => {
+      window.location.reload(false)
+
+    }, 1500)
 
   }
 
-  registerTeamToDB() {
-    return axios
-      .post('http://localhost:5000/teams/add', {
-        teamName: this.state.teamName,
-        analyst: this.state.analyst
-      })
-  }
+
   render() {
     const analysts = this.state.allAnalyst
     return (
       <>
-        <ManagerControl />
 
         <div className='form-group'>
           <label> Team Name </label>
@@ -92,9 +84,9 @@ class _AddTeamPage extends Component {
             }
           />
         </div>
-        {/* <div className='form-group'> */}
-        {/* <label> Analyst </label>{' '} */}
-        {/* <select
+        {/* <div className='form-group'>
+          <label> Analyst </label>
+          <select
             id='analyst'
             name='analyst'
             onChange={(e) =>
@@ -107,7 +99,7 @@ class _AddTeamPage extends Component {
               <option key={index} value={analyst.key}> {analyst.value} </option>
             ))}{' '}
           </select>{' '} */}
-        {/* </div>{' '} */}
+        {/* </div> */}
         <button onClick={this.handleSubmit} className="btn btn-primary">Register</button>
       </>
     )

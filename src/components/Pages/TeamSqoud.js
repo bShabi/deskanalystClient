@@ -2,27 +2,34 @@
 import React, { Component, Fragment } from 'react'
 import { withRouter } from "react-router";
 import FilterableTable from 'react-filterable-table';
+import ShowSpecificPlayer from './ShowSpecificPlayer'
 import {
   DataGrid,
 } from "@material-ui/data-grid";
 import axios from 'axios'
 import VisibilityIcon from '@material-ui/icons/Visibility';
+import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@material-ui/core/';
+import { Button } from '@material-ui/core';
+import { getPlayers } from '../until/httpService'
 
 class _TeamSqoud extends Component {
   constructor(props) {
+    super(props)
     const user = JSON.parse(sessionStorage.getItem("loginUser"))
     if (!user) {
       this.props.history.push('/')
     }
     const teamId = user ? user.teamid : " "
-    super(props)
     this.state = {
       teamID: teamId,
       playersBeforeSort: [],
-      players: []
+      players: [],
+      showPlayerDialog: false,
+      selecetGamesID: null
     }
-    this.getPlayers = this.getPlayers.bind(this)
     this.setID = this.setID.bind(this)
+    this.handleClickOpen = this.handleClickOpen.bind(this)
+    this.handleClose = this.handleClose.bind(this)
   }
 
   componentDidMount() {
@@ -30,17 +37,20 @@ class _TeamSqoud extends Component {
     const tempPlayer = [];
     const map = new Map();
 
-    this.getPlayers(teamID).then((result) => {
+    getPlayers(teamID).then((result) => {
       if (result) {
         for (const item of result.data) {
-          if (!map.has(item.firstName)) {
-            map.set(item.firstName, true);    // set any value to Map
+          if (!map.has(`${item.firstName}+${item.lastName}`)) {
+            map.set(`${item.firstName}+${item.lastName}`, true);    // set any value to Map
+            item.allGame = [item.gameId]
             tempPlayer.push(item);
+
           }
           else {
             var playerIndex = tempPlayer.findIndex(x => x.firstName === item.firstName)
+            // var tempGame = [tempPlayer[playerIndex].allGame, item.gameId]
             tempPlayer[playerIndex].goals += item.goals
-            console.log(tempPlayer[playerIndex]);
+            tempPlayer[playerIndex].allGame.push(item.gameId)
           }
         }
 
@@ -52,19 +62,25 @@ class _TeamSqoud extends Component {
   }
 
 
-  // usage example:
-  // var a = ['a', 1, 'a', 2, '1'];
+  handleClickOpen() {
+    this.setState({ showPlayerDialog: true })
+  };
 
-  getPlayers(teamID) {
-    return axios.get('http://localhost:5000/players/findByTeamid/' + teamID)
-  }
+  handleClose() {
+    this.setState({ showPlayerDialog: false })
+
+  };
+
+
   setID(players) {
     players.forEach(player => (
       player.id = player._id
     ))
   }
+
+
   render() {
-    const { players } = this.state
+    const { players, selecetGamesID } = this.state
     this.setID(players)
 
     const columns = [
@@ -79,8 +95,13 @@ class _TeamSqoud extends Component {
             variant="contained"
             color="primary"
             size="small"
-            style={{ marginLeft: 35 }}
+            style={{ marginLeft: 30 }}
+            onClick={() => {
+              var gameId = params.row.allGame
+              this.setState({ selecetGamesID: gameId })
+              this.setState({ showPlayerDialog: true })
 
+            }}
           >
 
 
@@ -89,7 +110,6 @@ class _TeamSqoud extends Component {
       },
     ]
 
-    console.log(players)
     return (
       <>
         <Fragment>
@@ -97,6 +117,25 @@ class _TeamSqoud extends Component {
             <DataGrid id={Math.random()} rows={players} columns={columns}
             />
           </div>
+          <Dialog
+            fullScreen
+            open={this.state.showPlayerDialog}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+          >
+            <DialogTitle id="alert-dialog-title">{"Game iinfo"}</DialogTitle>
+            <DialogContent>
+              <DialogContentText id="alert-dialog-description">
+                <ShowSpecificPlayer games={selecetGamesID} />
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={this.handleClose} color="primary">
+                Close
+          </Button>
+
+            </DialogActions>
+          </Dialog>
         </Fragment>
       </>
     )

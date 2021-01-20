@@ -37,6 +37,7 @@ export default class Navbar extends Component {
         <ul>
           <li>
             <NavLink
+              className="nav-links"
               to='/home'
               exact
               activeStyle={{
@@ -48,6 +49,8 @@ export default class Navbar extends Component {
           </li>
           <li>
             <NavLink
+              className="nav-links"
+
               to='/TeamSqoud'
               exact
               activeStyle={{
@@ -59,6 +62,8 @@ export default class Navbar extends Component {
           </li>
           <li>
             <NavLink
+              className="nav-links"
+
               to='/Match'
               exact
               activeStyle={{
@@ -71,6 +76,8 @@ export default class Navbar extends Component {
           {(permssionUser === 'Owner' || permssionUser === 'Analyst') && (
             <li>
               <NavLink
+                className="nav-links"
+
                 to='/CreateMatch'
                 exact
                 activeStyle={{
@@ -84,18 +91,37 @@ export default class Navbar extends Component {
           {permssionUser === 'Owner' && (
             <li>
               <NavLink
-                to='/Manager'
+                className="nav-links"
+
+                to='/Accounts'
                 exact
                 activeStyle={{
                   color: 'blue',
                 }}>
 
-                Manager
+                Accounts
+              </NavLink>
+            </li>
+          )}
+          {permssionUser === 'Owner' && (
+            <li>
+              <NavLink
+                className="nav-links"
+
+                to='/Teams'
+                exact
+                activeStyle={{
+                  color: 'blue',
+                }}>
+
+                Teams
               </NavLink>
             </li>
           )}
           {permssionUser && (
             <IconButton
+              className="nav-links"
+
               onClick={() => {
                 sessionStorage.clear()
                 this.setState({ permssionUser: null })

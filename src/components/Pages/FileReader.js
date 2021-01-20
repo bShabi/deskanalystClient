@@ -4,6 +4,7 @@ import Papa from 'papaparse';
 import ShowPlayers from './ShowPlayers';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Stepper from 'react-stepper-horizontal'
 
 class FileReader extends React.Component {
   constructor(props) {
@@ -66,6 +67,10 @@ class FileReader extends React.Component {
         {/* <p>Import CSV File!</p> */}
 
         <Fragment>
+          <div>
+            <Stepper steps={[{ title: 'Insert deitals form Game' }, { title: 'Upload csv File' }, { title: 'Insert player deitals ' }]} activeStep={1} />
+
+          </div>
           <input
             className="csv-input"
             type="file"

@@ -2,7 +2,6 @@
 import React, { Fragment, Component } from 'react'
 import { withRouter } from "react-router";
 import axios from 'axios'
-import FilterableTable from 'react-filterable-table';
 import {
     DataGrid,
 } from "@material-ui/data-grid";
@@ -50,12 +49,14 @@ class _Match extends Component {
     }
 
     componentDidMount() {
-        const { teamID, games } = this.state
+        const { teamID } = this.state
 
         toast.configure()
         this.getAllGames(teamID).then((result) => {
-            if (result.data)
+            if (result.data) {
+                console.log(result.data)
                 this.setState({ games: result.data })
+            }
         })
 
     }
@@ -67,6 +68,9 @@ class _Match extends Component {
         axios.delete('http://localhost:5000/games/remove/' + gameID)
         axios.delete('http://localhost:5000/players/remove/' + gameID)
 
+        setTimeout(() => {
+            window.location.reload(false)
+        }, 1500)
 
     }
     sumField(games) {
@@ -159,6 +163,8 @@ class _Match extends Component {
                     </div>
                     <Dialog
                         fullScreen
+                        scroll='body'
+
                         open={this.state.showPlayerDialog}
                         aria-labelledby="alert-dialog-title"
                         aria-describedby="alert-dialog-description"
@@ -176,7 +182,7 @@ class _Match extends Component {
 
                         </DialogActions>
                     </Dialog>
-                    {permission != 'coach' &&
+                    {permission !== 'coach' &&
                         <Dialog
                             open={this.state.showDeleteDialog}
                             TransitionComponent={Transition}

@@ -1,7 +1,6 @@
 import React, { Fragment, useState, useEffect } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Navbar from './components/layout/Navbar';
-import Alert from './components/layout/Alert';
 import { TeamSqoud } from './components/Pages/TeamSqoud';
 import { Match } from './components/Pages/Match';
 import { CreateMatch } from './components/Pages/CreateMatch';
@@ -11,11 +10,11 @@ import ShowPlayers from './components/Pages/ShowPlayers';
 import { LoginPage } from './components/Pages/LoginPage';
 import RegisterUser from './components/Pages/RegisterUser';
 import ManagerControl from './components/Pages/Manger/ManagerControl';
-import AddUser from './components/Pages/Manger/Account/AddAccountPage';
-import { RemoveAccountPage } from './components/Pages/Manger/Account/RemoveAccountPage';
+import { Accounts } from './components/Pages/Manger/Account/Accounts';
+// import { RemoveAccountPage } from './components/Pages/Manger/Account/RemoveAccountPage';
 import UpdateUser from './components/Pages/Manger/ManagerControl';
 import { AddTeamPage } from './components/Pages/Manger/Team/AddTeamPage';
-import { RemoveTeamsPage } from './components/Pages/Manger/Team/DeleteTeamPage'
+import { Teams } from './components/Pages/Manger/Team/Teams'
 
 
 
@@ -33,8 +32,8 @@ const App = () => {
           <Switch>
             <Route exact path='/' component={LoginPage} />
             <Route exact path='/Manager' component={ManagerControl} />
-            <Route exact path='/Manager/AddUser' component={AddUser} />
-            <Route exact path='/Manager/RemoveUser' component={RemoveAccountPage} />
+            {/* <Route exact path='/Manager/AddAccountPage' component={AddAccountPage} /> */}
+            <Route exact path='/Accounts' component={Accounts} />
             <Route
               exact
               path='/Manager/UpdateUser'
@@ -47,7 +46,7 @@ const App = () => {
             />
             <Route exact path='/TeamSqoud' component={TeamSqoud} />
             <Route exact path='/Manager/AddTeam' component={AddTeamPage} />
-            <Route exact path='/Manager/RemoveTeam' component={RemoveTeamsPage} />
+            <Route exact path='/Teams' component={Teams} />
 
             <Route exact path='/Match' component={Match} />
             <Route
