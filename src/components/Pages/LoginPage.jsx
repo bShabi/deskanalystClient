@@ -16,6 +16,7 @@ class _LoginPage extends React.Component {
     };
     this.onSubmit = this.onSubmit.bind(this);
     this.onChange = this.onChange.bind(this);
+    this.restPassword = this.restPassword.bind(this)
   }
   componentDidMount() {
     const user = JSON.parse(sessionStorage.getItem("loginUser"))
@@ -29,10 +30,14 @@ class _LoginPage extends React.Component {
       [name]: value,
     });
   }
+  restPassword(e) {
+    e.preventDefault()
+    axios.get('http://localhost:5000/users/restPassword')
+  }
   onSubmit(e) {
     e.preventDefault()
 
-    axios.post('http://localhost:5000/users/login', {
+    axios.post('https://deskanalyst.herokuapp.com/users/login', {
       email: this.state.email,
       password: this.state.password,
     })
@@ -65,15 +70,6 @@ class _LoginPage extends React.Component {
         <div className='base-container'>
           <div className='header'> </div>
           <div className='content'>
-            <div className='image'>
-              <img
-                src={loginImg}
-                style={{
-                  width: '50%',
-                  height: '50%',
-                }}
-              />
-            </div>
             <div className='form'>
               <div className='form-group'>
                 <label htmlFor='username'> Username </label>
@@ -99,6 +95,7 @@ class _LoginPage extends React.Component {
             <button onClick={this.onSubmit} type='button' className='btn'>
               Login
             </button>
+            <button onClick={this.restPassword}>Rest  passowrd</button>
           </div>
         </div>
       </form>

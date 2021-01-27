@@ -19,13 +19,10 @@ export default class Navbar extends Component {
       firstName: firstName,
       lastName: lastName
     };
-    console.log(user)
-
   }
 
   render() {
     const { icon, firstName, lastName, title, permssionUser } = this.state;
-    console.log(this.state)
     return (
       <nav className='navbar bg-primary'>
         <h4>
@@ -35,45 +32,52 @@ export default class Navbar extends Component {
           <span> Hello  {firstName} {lastName}, [ {permssionUser} ] </span>
         }
         <ul>
-          <li>
-            <NavLink
-              className="nav-links"
-              to='/home'
-              exact
-              activeStyle={{
-                color: 'blue',
-              }}>
 
-              Home
+          {(permssionUser === 'Coach' || permssionUser === 'Analyst') && (
+            <li>
+              <NavLink
+                className="nav-links"
+                to='/home'
+                exact
+                activeStyle={{
+                  color: 'blue',
+                }}>
+
+                Home
             </NavLink>
-          </li>
-          <li>
-            <NavLink
-              className="nav-links"
+            </li>
+          )}
+          {(permssionUser === 'Coach' || permssionUser === 'Analyst') && (
+            <li>
+              <NavLink
+                className="nav-links"
 
-              to='/TeamSqoud'
-              exact
-              activeStyle={{
-                color: 'blue',
-              }}>
+                to='/TeamSqoud'
+                exact
+                activeStyle={{
+                  color: 'blue',
+                }}>
 
-              Team Sqoud
+                Team Sqoud
             </NavLink>
-          </li>
-          <li>
-            <NavLink
-              className="nav-links"
+            </li>
+          )}
+          {(permssionUser === 'Coach' || permssionUser === 'Analyst') && (
+            <li>
+              <NavLink
+                className="nav-links"
 
-              to='/Match'
-              exact
-              activeStyle={{
-                color: 'blue',
-              }}>
+                to='/Match'
+                exact
+                activeStyle={{
+                  color: 'blue',
+                }}>
 
-              Match
+                Games
             </NavLink>
-          </li>
-          {(permssionUser === 'Owner' || permssionUser === 'Analyst') && (
+            </li>
+          )}
+          {(permssionUser === 'Analyst') && (
             <li>
               <NavLink
                 className="nav-links"
@@ -84,7 +88,7 @@ export default class Navbar extends Component {
                   color: 'blue',
                 }}>
 
-                Create Match
+                New Game
               </NavLink>
             </li>
           )}
@@ -134,7 +138,7 @@ export default class Navbar extends Component {
 
           )}
         </ul>
-      </nav>
+      </nav >
     );
   }
 }

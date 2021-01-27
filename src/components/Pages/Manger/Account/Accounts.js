@@ -67,144 +67,145 @@ class _Accounts extends Component {
 
         return (
             <>
-                <ul style={{ display: "flex", textAlign: 'center' }}>
-                    <li > <AddIcon
-                        style={{ textAlign: 'center' }}
-                        onClick={() => this.setState({ dialogMsg: true, accountDialog: true })} /></li>
-                </ul>
-                <div className="container">
-                    <div className="row" style={{
-                        border: '1px solid black'
-                    }}>
-                        <div className="col-4" >
-                            Owners:
-                        </div>
-                        <div className="col">
-                            <GridList cols={3} cellHeight={90} >
-                                {accounts.filter(user => user.permission === 'Owner').map((account) => (
-                                    <GridListTile className="accounts" key={account._id}>
-                                        <GridListTileBar
-                                            title={`${account.firstName}  ${account.lastName}`}
-                                            subtitle={account.email}
-                                            actionIcon={
-                                                <IconButton onClick={() => {
-                                                    console.log(account.teamid)
-                                                    if (account.teamid === null) {
-                                                        this.setState({ accountDialog: false, infoDialog: true, dialogMsg: true, accountSelected: account })
-                                                    }
-                                                    else {
-                                                        getTeamNameById(account.teamid).then((result) => {
-                                                            account.nameTeam = result.data
-                                                            this.setState({ accountDialog: false, infoDialog: true, dialogMsg: true, accountSelected: account })
-                                                        })
-                                                    }
-                                                }}>
-                                                    <InfoIcon />
-                                                </IconButton>
-                                            }
-                                        />
-                                    </GridListTile>
-                                ))}
-                            </GridList>
-                        </div>
-                    </div>
-                    <div className="row" style={{
-                        border: '1px solid black'
-                    }}>
-                        <div className="col-4">
-                            Analyst
-                    </div>
-                        <div className="col">
-                            <GridList cols={3} cellHeight={90} >
-                                {accounts.filter(user => user.permission === 'Analyst').map((account) => (
-                                    <GridListTile className="accounts" key={account._id}>
-                                        <GridListTileBar
-                                            title={`${account.firstName}  ${account.lastName}`}
-                                            subtitle={account.email}
-                                            actionIcon={
-                                                <IconButton onClick={() => {
-                                                    console.log(account.teamid)
-                                                    if (account.teamid === null) {
-                                                        this.setState({ accountDialog: false, infoDialog: true, dialogMsg: true, accountSelected: account })
-                                                    }
-                                                    else {
-                                                        getTeamNameById(account.teamid).then((result) => {
-                                                            account.nameTeam = result.data
-                                                            this.setState({ accountDialog: false, infoDialog: true, dialogMsg: true, accountSelected: account })
-                                                        })
-                                                    }
-                                                }}>
-                                                    <InfoIcon />
-                                                </IconButton>
-                                            }
-                                        />
-                                    </GridListTile>
-                                ))}
-                            </GridList>
-                        </div>
-                    </div>
-                    <div className="row" style={{
-                        border: '1px solid black'
-                    }}>
-                        <div className="col-4">
-                            Coach
-                            </div>
-                        <div className="col">
-                            <GridList cols={3} cellHeight={90} >
-                                {accounts.filter(user => user.permission === 'Coach').map((account) => (
-                                    <GridListTile className="accounts" key={account._id}>
-                                        <GridListTileBar
-                                            title={`${account.firstName}  ${account.lastName}`}
-                                            subtitle={account.email}
-                                            actionIcon={
-                                                <IconButton onClick={() => {
-                                                    console.log(account.teamid)
-                                                    if (account.teamid === null) {
-                                                        this.setState({ accountDialog: false, infoDialog: true, dialogMsg: true, accountSelected: account })
-                                                    }
-                                                    else {
-                                                        getTeamNameById(account.teamid).then((result) => {
-                                                            account.nameTeam = result.data
-                                                            this.setState({ accountDialog: false, infoDialog: true, dialogMsg: true, accountSelected: account })
-                                                        })
-                                                    }
-                                                }}>
-                                                    <InfoIcon />
-                                                </IconButton>
-                                            }
-                                        />
-                                    </GridListTile>
-                                ))}
-                            </GridList>
-                        </div>
-                    </div>
-                </div>
                 <Fragment>
-                    <Dialog
-                        scroll='body'
-                        open={this.state.dialogMsg}
-                        onClose={this.handleClose}
-                        aria-labelledby="alert-dialog-title"
-                        aria-describedby="alert-dialog-description"
-                    >
-                        <DialogTitle id="alert-dialog-title"> {infoDialog ? "Update User" : "Add User "}</DialogTitle>
-                        <DialogContent>
-                            <DialogContentText id="alert-dialog-description">
-                                {infoDialog ?
-                                    <UpdateAccountPage account={accountSelected} /> : accountDialog ? <AddAccountPage /> : ""
-                                }
+                    <ul style={{ display: "flex", textAlign: 'center' }}>
+                        <li > <AddIcon
+                            style={{ textAlign: 'center' }}
+                            onClick={() => this.setState({ dialogMsg: true, accountDialog: true })} /></li>
+                    </ul>
+                    <div className="container">
+                        <div className="row" style={{
+                            border: '1px solid black'
+                        }}>
+                            <div className="col-4" >
+                                Owners:
+                        </div>
+                            <div className="col">
+                                <GridList cols={3} cellHeight={90} >
+                                    {accounts.filter(user => user.permission === 'Owner').map((account) => (
+                                        <GridListTile className="accounts" key={account._id}>
+                                            <GridListTileBar
+                                                title={`${account.firstName}  ${account.lastName}`}
+                                                subtitle={account.email}
+                                                actionIcon={
+                                                    <IconButton onClick={() => {
+                                                        console.log(account.teamid)
+                                                        if (account.teamid === null) {
+                                                            this.setState({ accountDialog: false, infoDialog: true, dialogMsg: true, accountSelected: account })
+                                                        }
+                                                        else {
+                                                            getTeamNameById(account.teamid).then((result) => {
+                                                                account.nameTeam = result.data
+                                                                this.setState({ accountDialog: false, infoDialog: true, dialogMsg: true, accountSelected: account })
+                                                            })
+                                                        }
+                                                    }}>
+                                                        <InfoIcon />
+                                                    </IconButton>
+                                                }
+                                            />
+                                        </GridListTile>
+                                    ))}
+                                </GridList>
+                            </div>
+                        </div>
+                        <div className="row" style={{
+                            border: '1px solid black'
+                        }}>
+                            <div className="col-4">
+                                Analyst
+                    </div>
+                            <div className="col">
+                                <GridList cols={3} cellHeight={90} >
+                                    {accounts.filter(user => user.permission === 'Analyst').map((account) => (
+                                        <GridListTile className="accounts" key={account._id}>
+                                            <GridListTileBar
+                                                title={`${account.firstName}  ${account.lastName}`}
+                                                subtitle={account.email}
+                                                actionIcon={
+                                                    <IconButton onClick={() => {
+                                                        console.log(account.teamid)
+                                                        if (account.teamid === null) {
+                                                            this.setState({ accountDialog: false, infoDialog: true, dialogMsg: true, accountSelected: account })
+                                                        }
+                                                        else {
+                                                            getTeamNameById(account.teamid).then((result) => {
+                                                                account.nameTeam = result.data
+                                                                this.setState({ accountDialog: false, infoDialog: true, dialogMsg: true, accountSelected: account })
+                                                            })
+                                                        }
+                                                    }}>
+                                                        <InfoIcon />
+                                                    </IconButton>
+                                                }
+                                            />
+                                        </GridListTile>
+                                    ))}
+                                </GridList>
+                            </div>
+                        </div>
+                        <div className="row" style={{
+                            border: '1px solid black'
+                        }}>
+                            <div className="col-4">
+                                Coach
+                            </div>
+                            <div className="col">
+                                <GridList cols={3} cellHeight={90} >
+                                    {accounts.filter(user => user.permission === 'Coach').map((account) => (
+                                        <GridListTile className="accounts" key={account._id}>
+                                            <GridListTileBar
+                                                title={`${account.firstName}  ${account.lastName}`}
+                                                subtitle={account.email}
+                                                actionIcon={
+                                                    <IconButton onClick={() => {
+                                                        console.log(account.teamid)
+                                                        if (account.teamid === null) {
+                                                            this.setState({ accountDialog: false, infoDialog: true, dialogMsg: true, accountSelected: account })
+                                                        }
+                                                        else {
+                                                            getTeamNameById(account.teamid).then((result) => {
+                                                                account.nameTeam = result.data
+                                                                this.setState({ accountDialog: false, infoDialog: true, dialogMsg: true, accountSelected: account })
+                                                            })
+                                                        }
+                                                    }}>
+                                                        <InfoIcon />
+                                                    </IconButton>
+                                                }
+                                            />
+                                        </GridListTile>
+                                    ))}
+                                </GridList>
+                            </div>
+                        </div>
+                    </div>
+                    <Fragment>
+                        <Dialog
+                            scroll='body'
+                            open={this.state.dialogMsg}
+                            onClose={this.handleClose}
+                            aria-labelledby="alert-dialog-title"
+                            aria-describedby="alert-dialog-description"
+                        >
+                            <DialogTitle id="alert-dialog-title"> {infoDialog ? "Update User" : "Add User "}</DialogTitle>
+                            <DialogContent>
+                                <DialogContentText id="alert-dialog-description">
+                                    {infoDialog ?
+                                        <UpdateAccountPage account={accountSelected} /> : accountDialog ? <AddAccountPage /> : ""
+                                    }
 
-                            </DialogContentText>
-                        </DialogContent>
-                        <DialogActions>
-                            <Button onClick={this.handleClose} color="primary">
-                                Cancel
+                                </DialogContentText>
+                            </DialogContent>
+                            <DialogActions>
+                                <Button onClick={this.handleClose} color="primary">
+                                    Cancel
           </Button>
 
-                        </DialogActions>
-                    </Dialog>
+                            </DialogActions>
+                        </Dialog>
+                    </Fragment>
                 </Fragment>
-
             </>
         );
     }

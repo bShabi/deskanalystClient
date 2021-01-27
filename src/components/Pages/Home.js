@@ -1,6 +1,7 @@
 
 import React, { Component } from 'react'
 import { withRouter } from "react-router";
+import GameReport from '../Reports/GamesReports'
 
 class _Home extends Component {
 
@@ -13,6 +14,11 @@ class _Home extends Component {
   render() {
     return (
       <div>
+        <GameReport className="col-lg-3" />
+
+
+
+
 
       </div>
     )

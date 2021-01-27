@@ -9,6 +9,7 @@
     "@okta/okta-react": "^1.4.1",
     "@okta/okta-signin-widget": "^3.9.2",
     "axios": "^0.19.2",
+    "bootstrap": "^4.6.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "immer": "^8.0.0",
