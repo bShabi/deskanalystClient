@@ -23,6 +23,9 @@ export function updateTeam(team) {
     console.log(updateTeam)
 
 }
+export function getUsersByTeamid(teamId) {
+    return axios.get('http://localhost:5000/users/findByTeamId/' + teamId)
+}
 
 export function getAllUsers() {
     return axios.get('http://localhost:5000/users')
@@ -53,10 +56,37 @@ export function getPlayers(teamID) {
 export function getGames() {
     return axios.get('http://localhost:5000/games')
 }
+export function getGamesByTeamId(teamID) {
+    return axios.get('http://localhost:5000/games/find/' + teamID)
+}
 
 export function getPlayersInGame(gameID) {
     return axios.get('http://localhost:5000/players/find/' + gameID)
 }
 export function getGamesByGameId(gameID) {
     return axios.get('http://localhost:5000/games/findgame/' + gameID)
+}
+
+export function resetPassword(email) {
+    return axios.get('http://localhost:5000/users/resetpassword/' + email)
+}
+export function getUserByEmail(email) {
+    return axios
+        .get('http://localhost:5000/users/find/' + email, {
+        })
+}
+export function registerUserToDB(Accounts) {
+    console.log(Accounts)
+    return axios
+        .post('http://localhost:5000/users/add', {
+
+            firstName: Accounts.firstName,
+            lastName: Accounts.lastName,
+            email: Accounts.email,
+            password: Accounts.password,
+            team: Accounts.team,
+            permission: Accounts.permission,
+
+        })
+
 }

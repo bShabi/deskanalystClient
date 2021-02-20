@@ -19,6 +19,11 @@ import { getTeamNameById, getAllUsers, removeUser } from '../../../until/httpSer
 class _Accounts extends Component {
     constructor(props) {
         super(props)
+        const user = JSON.parse(sessionStorage.getItem("loginUser"))
+        const permission = user ? user.permission : null
+        if (!(permission === 'Owner')) {
+            this.props.history.push('/')
+        }
         this.state = {
             accounts: [],
             dialogMsg: false,
@@ -124,7 +129,7 @@ class _Accounts extends Component {
                                                 subtitle={account.email}
                                                 actionIcon={
                                                     <IconButton onClick={() => {
-                                                        console.log(account.teamid)
+                                                        console.log(account)
                                                         if (account.teamid === null) {
                                                             this.setState({ accountDialog: false, infoDialog: true, dialogMsg: true, accountSelected: account })
                                                         }
@@ -161,13 +166,18 @@ class _Accounts extends Component {
                                                     <IconButton onClick={() => {
                                                         console.log(account.teamid)
                                                         if (account.teamid === null) {
+                                                            console.log("null")
+
                                                             this.setState({ accountDialog: false, infoDialog: true, dialogMsg: true, accountSelected: account })
                                                         }
                                                         else {
+                                                            console.log("in")
                                                             getTeamNameById(account.teamid).then((result) => {
                                                                 account.nameTeam = result.data
                                                                 this.setState({ accountDialog: false, infoDialog: true, dialogMsg: true, accountSelected: account })
+
                                                             })
+
                                                         }
                                                     }}>
                                                         <InfoIcon />

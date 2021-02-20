@@ -42,7 +42,7 @@ export default class ShowSpecificPlayer extends Component {
         const { games, gamesId } = this.state
         this.setID(games)
         const columns = [
-            { field: 'gameDate', headerName: 'Date', width: 150 },
+            { field: 'gameDate', headerName: 'Date', width: 300 },
             { field: 'myTeamName', headerName: 'My Team', width: 200 },
             { field: 'opponentTeam', headerName: 'opponent Team', width: 180 },
             { field: 'finalScore', headerName: 'Final Score', width: 130 },

@@ -4,25 +4,33 @@ import '../css/App.css';
 import axios from 'axios';
 import { withRouter } from 'react-router';
 import { ToastContainer, toast } from 'react-toastify';
+import { resetPassword } from '../until/httpService'
 
 class _LoginPage extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
+    const user = JSON.parse(sessionStorage.getItem("loginUser"))
+    if (!user) {
+      this.props.history.push('/')
+    }
+    else {
+      this.props.history.push('/Home')
+    }
     this.state = {
       redirect: false,
       email: '',
       password: '',
       nameTeam: '',
+      isCalcOnSubmit: false,
+      resetPassPage: false
     };
-    this.onSubmit = this.onSubmit.bind(this);
+    this.sendPassword = this.sendPassword.bind(this)
+    this.onClickLogin = this.onClickLogin.bind(this);
     this.onChange = this.onChange.bind(this);
-    this.restPassword = this.restPassword.bind(this)
+    this.onClickResetPassword = this.onClickResetPassword.bind(this)
   }
   componentDidMount() {
-    const user = JSON.parse(sessionStorage.getItem("loginUser"))
-    if (user) {
-      this.props.history.push('/Dashboard')
-    } toast.configure();
+    toast.configure();
   }
 
   onChange(name, value) {
@@ -30,49 +38,75 @@ class _LoginPage extends React.Component {
       [name]: value,
     });
   }
-  restPassword(e) {
+  onClickResetPassword(e) {
     e.preventDefault()
-    axios.get('http://localhost:5000/users/restPassword')
+    this.setState({ resetPassPage: true })
   }
-  onSubmit(e) {
-    e.preventDefault()
+  sendPassword(e) {
+    const { email } = this.state
+    resetPassword(email)
+      .then((result) => {
+        toast.success(result.data)
+      })
+  }
+  onClickLogin(e) {
+    const { isCalcOnSubmit } = this.state
+    if (isCalcOnSubmit) {
+      return
+    }
+    this.setState({ resetPassPage: false, isCalcOnSubmit: true })
+    try {
+      e.preventDefault()
+      axios.post('http://localhost:5000/users/login', {
+        email: this.state.email,
+        password: this.state.password,
+      })
+        .then(
+          (response) => {
+            console.log(response);
+            if (response.data === null) {
+              toast.error('email or password is incorrect');
+              toast.clearWaitingQueue();
 
-    axios.post('https://deskanalyst.herokuapp.com/users/login', {
-      email: this.state.email,
-      password: this.state.password,
-    })
-      .then(
-        (response) => {
-          console.log(response);
-          if (response.data === null) {
-            toast.error('email or password is incorrect');
-          } else {
-            console.log(response.data);
-            sessionStorage.setItem('loginUser', JSON.stringify(response.data));
-            console.log(response.data.permission)
-            this.setState({
-              nameTeam: response.data.nameTeam,
-            });
-            this.props.history.push('/Dashboard');
-            toast.success('success');
-            window.location.reload(false);
+            } else {
+              // console.log(response.data);
+              sessionStorage.setItem('loginUser', JSON.stringify(response.data));
+              console.log(response.data)
+              this.setState({
+                nameTeam: response.data.nameTeam,
+              });
+              this.props.history.push('/Home');
+              toast.success('Success login');
+              window.location.reload(false);
+            }
+            this.setState({ isCalcOnSubmit: false });
+
+          },
+          (error) => {
+            console.log(error);
+            this.setState({ isCalcOnSubmit: false });
+
           }
-        },
-        (error) => {
-          console.log(error);
-        }
-      );
+        );
+    }
+    catch (error) {
+      console.log(error)
+      this.setState({ isCalcOnSubmit: false });
+
+    }
   }
 
   render() {
-    return (
-      <form action='onSubmit'>
-        <div className='base-container'>
-          <div className='header'> </div>
-          <div className='content'>
-            <div className='form'>
+    const { resetPassPage } = this.state
+
+    if (resetPassPage) {
+      return (
+        <>
+          <form>
+            <div className='formLogin'>
+
               <div className='form-group'>
-                <label htmlFor='username'> Username </label>
+                <label htmlFor='username'> Email </label>
                 <input
                   type='text'
                   name='email'
@@ -80,26 +114,51 @@ class _LoginPage extends React.Component {
                   onChange={(e) => this.onChange(e.target.name, e.target.value)}
                 />
               </div>
-              <div className='form-group'>
-                <label htmlFor='password'> Password </label>
-                <input
-                  type='password'
-                  name='password'
-                  placeholder='Password'
-                  onChange={(e) => this.onChange(e.target.name, e.target.value)}
-                />
+              <button className='btn' onClick={this.sendPassword}>Reset password</button> <br />              <button className='btn' onClick={() => this.setState({ resetPassPage: false })}>Log in</button>
+            </div>
+          </form>
+        </>
+      )
+    }
+    if (!resetPassPage) {
+      return (
+        <form action='onSubmit'>
+          <div className='formLogin'>
+            <div className='header'> </div>
+            <div className='content'>
+              <div className='form'>
+                <div className='form-group'>
+                  <label htmlFor='username'> Email </label>
+                  <input
+                    type='text'
+                    name='email'
+                    placeholder='Email'
+                    onChange={(e) => this.onChange(e.target.name, e.target.value)}
+                  />
+                </div>
+                <div className='form-group'>
+                  <label htmlFor='password'> Password </label>
+                  <input
+                    type='password'
+                    name='password'
+                    placeholder='Password'
+                    onChange={(e) => this.onChange(e.target.name, e.target.value)}
+                  />
+                </div>
               </div>
             </div>
+            <div className='footer'>
+              <button onClick={this.onClickLogin} type='button' className='btn'>
+                Login
+            </button> <br />
+              <button onClick={this.onClickResetPassword} className='btn'>Reset passowrd</button>
+            </div>
           </div>
-          <div className='footer'>
-            <button onClick={this.onSubmit} type='button' className='btn'>
-              Login
-            </button>
-            <button onClick={this.restPassword}>Rest  passowrd</button>
-          </div>
-        </div>
-      </form>
-    );
+          <ToastContainer limit={1} />
+        </form>
+
+      );
+    }
   }
 }
 

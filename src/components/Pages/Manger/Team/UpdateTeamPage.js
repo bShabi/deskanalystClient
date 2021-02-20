@@ -1,14 +1,16 @@
 import React, { Component } from 'react'
 import { withRouter } from 'react-router-dom'
 import { toast } from 'react-toastify';
-import { deleteUserTeamID, updateTeam, removeTeam } from '../../../until/httpService'
+import { deleteUserTeamID, updateTeam, removeTeam, getUsersByTeamid } from '../../../until/httpService'
 
 class _UpdateTeamPage extends Component {
     constructor(props) {
         super(props)
         console.log(this.props.team)
         this.state = {
-            team: this.props.team
+            team: this.props.team,
+            users: null,
+            accounts: null
 
         }
         this.changeProfile = this.changeProfile.bind(this)
@@ -18,7 +20,20 @@ class _UpdateTeamPage extends Component {
     }
 
     componentDidMount() {
+        const { team } = this.state
         toast.configure()
+        getUsersByTeamid(team._id)
+            .then(
+                (response) => {
+                    this.setState({ accounts: response.data }, () => console.log(response.data))
+                    console.log(this.state.accounts)
+
+                },
+                (error) => {
+                    console.log(error);
+                }
+            );
+
     }
     changeProfile(name, value) {
 
@@ -51,15 +66,13 @@ class _UpdateTeamPage extends Component {
 
     handelSubmitDelete() {
         const { team } = this.state
-        const accountTeam = team.account
         console.log(team.account)
         this.updateTeamIdFromAccount(team)
 
 
 
     }
-    updateTeamIdFromAccount(users) {
-        const { team } = this.state
+    updateTeamIdFromAccount(team) {
         var users = team.account
         var teamid = team._id
 
@@ -76,19 +89,20 @@ class _UpdateTeamPage extends Component {
             })
 
         })
-        setTimeout(() => {
-            window.location.reload(false)
-        }, 1500)
+        // setTimeout(() => {
+        //     window.location.reload(false)
+        // }, 1500)
 
     }
     render() {
-        const { team } = this.state
+        const { team, accounts } = this.state
         return (
             <div>
                 <form>
                     <input type="text" defaultValue={team.teamName} name="teamName" onChange={(e) =>
                         this.changeProfile(e.target.name, e.target.value)} />
                 </form>
+
                 <button type='button' className='btn' onClick={this.handleSubmitUpdate} >
                     Update
                 </button>

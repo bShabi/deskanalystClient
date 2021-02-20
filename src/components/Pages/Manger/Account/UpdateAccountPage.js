@@ -14,7 +14,7 @@ class _UpdateAccountPage extends Component {
 
         }
         this.changeProfile = this.changeProfile.bind(this)
-        this.handleSubbmit = this.handleSubbmit.bind(this)
+        this.handleSubmit = this.handleSubmit.bind(this)
         this.handleRemoveUser = this.handleRemoveUser.bind(this)
     }
     componentDidMount() {
@@ -40,7 +40,7 @@ class _UpdateAccountPage extends Component {
         }), console.log(this.state.account))
     }
 
-    handleSubbmit(e) {
+    handleSubmit(e) {
         const { account, oringalAccount } = this.state
         const prevTeam = oringalAccount.teamid
         console.log(prevTeam)
@@ -80,7 +80,7 @@ class _UpdateAccountPage extends Component {
 
                 <Fragment>
                     <div>
-                        <form onSubmit={this.handleSubmit}>
+                        <form >
                             <lable> First Name: </lable> <input type="text" defaultValue={account.firstName} />
                             <lable>Last Name </lable> <input type="text" defaultValue={account.lastName} />
                             <label>Email </label> <input type='email' name="email" defaultValue={account.email} onChange={(e) => this.changeProfile(e.target.name, e.target.value)} />
@@ -116,7 +116,7 @@ class _UpdateAccountPage extends Component {
                             <label>Password</label>
                             <input type='password' defaultValue={account.password} onChange={(e) =>
                                 this.changeProfile(e.target.name, e.target.value)} />
-                            <button type='button' className='btn' onClick={this.handleSubbmit} >
+                            <button type='button' className='btn' onClick={this.handleSubmit} >
                                 Update
                 </button>
                             <button type='button' className='btn-Remove' onClick={this.handleRemoveUser}>Remove User</button>

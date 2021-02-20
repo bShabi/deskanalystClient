@@ -19,6 +19,13 @@ export default class Navbar extends Component {
       firstName: firstName,
       lastName: lastName
     };
+    this.logout = this.logout.bind(this)
+  }
+  logout() {
+    alert("click")
+    sessionStorage.clear()
+    this.setState({ permssionUser: null })
+    window.location.reload(false);
   }
 
   render() {
@@ -32,77 +39,50 @@ export default class Navbar extends Component {
           <span> Hello  {firstName} {lastName}, [ {permssionUser} ] </span>
         }
         <ul>
-
           {(permssionUser === 'Coach' || permssionUser === 'Analyst') && (
             <li>
-              <NavLink
-                className="nav-links"
-                to='/home'
-                exact
-                activeStyle={{
-                  color: 'blue',
-                }}>
-
+              <NavLink className="nav-links" to='/home' exact activeStyle={{
+                color: 'blue',
+              }}>
                 Home
-            </NavLink>
+             </NavLink>
             </li>
           )}
           {(permssionUser === 'Coach' || permssionUser === 'Analyst') && (
             <li>
               <NavLink
-                className="nav-links"
-
-                to='/TeamSqoud'
-                exact
-                activeStyle={{
+                className="nav-links" to='/TeamSqoud' exact activeStyle={{
                   color: 'blue',
                 }}>
-
                 Team Sqoud
-            </NavLink>
+               </NavLink>
             </li>
           )}
           {(permssionUser === 'Coach' || permssionUser === 'Analyst') && (
             <li>
               <NavLink
-                className="nav-links"
-
-                to='/Match'
-                exact
-                activeStyle={{
+                className="nav-links" to='/Games' exact activeStyle={{
                   color: 'blue',
                 }}>
-
                 Games
-            </NavLink>
+               </NavLink>
             </li>
           )}
           {(permssionUser === 'Analyst') && (
             <li>
               <NavLink
-                className="nav-links"
-
-                to='/CreateMatch'
-                exact
-                activeStyle={{
+                className="nav-links" to='/NewGame' exact activeStyle={{
                   color: 'blue',
                 }}>
-
                 New Game
-              </NavLink>
+               </NavLink>
             </li>
           )}
           {permssionUser === 'Owner' && (
             <li>
-              <NavLink
-                className="nav-links"
-
-                to='/Accounts'
-                exact
-                activeStyle={{
-                  color: 'blue',
-                }}>
-
+              <NavLink className="nav-links" to='/Accounts' exact activeStyle={{
+                color: 'blue',
+              }}>
                 Accounts
               </NavLink>
             </li>
@@ -110,32 +90,23 @@ export default class Navbar extends Component {
           {permssionUser === 'Owner' && (
             <li>
               <NavLink
-                className="nav-links"
-
-                to='/Teams'
-                exact
-                activeStyle={{
+                className="nav-links" to='/Teams' exact activeStyle={{
                   color: 'blue',
                 }}>
-
                 Teams
               </NavLink>
             </li>
           )}
           {permssionUser && (
-            <IconButton
-              className="nav-links"
+            <li>
+              <IconButton
+                className="nav-links"
+                onClick={() => this.logout()}
+              >
+                <ExitToAppIcon />
+              </IconButton>
 
-              onClick={() => {
-                sessionStorage.clear()
-                this.setState({ permssionUser: null })
-                window.location.reload(false);
-              }}
-            >
-              <ExitToAppIcon />
-            </IconButton>
-
-
+            </li>
           )}
         </ul>
       </nav >

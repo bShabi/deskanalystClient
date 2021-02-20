@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { withRouter } from "react-router";
-import ManagerControl from '../ManagerControl'
 import axios from 'axios';
 import { registerTeamToDB, getAllUsers } from '../../../until/httpService'
 import { toast } from 'react-toastify';

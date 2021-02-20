@@ -1,17 +1,16 @@
-import { makeStyles } from '@material-ui/core';
 import React, { Fragment } from 'react';
-import ManagerControl from '../ManagerControl';
 import axios from 'axios';
 import { withRouter } from 'react-router';
-import { getAllTeams } from '../../../until/httpService'
+import { getAllTeams, getUserByEmail, registerUserToDB } from '../../../until/httpService'
 
-import { toast } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify';
 
 
 class _AddAccountPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      // account: null,
       firstName: null,
       lastName: null,
       email: null,
@@ -23,9 +22,8 @@ class _AddAccountPage extends React.Component {
     };
     this.changeValue = this.changeValue.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.registerUserToDB = this.registerUserToDB.bind(this);
     this.validEmail = this.validEmail.bind(this)
-    this.getUserByEmail = this.getUserByEmail.bind(this);
+    this.validPassword = this.validPassword.bind(this)
   }
   componentDidMount() {
     toast.configure();
@@ -47,10 +45,11 @@ class _AddAccountPage extends React.Component {
     }, () => console.log(this.state));
   }
   handleSubmit(e) {
-    var account = this.state;
+    var { account, email } = this.state;
     var arrData = [];
-    Object.entries(account).map(([key, value]) => {
+    Object.entries(this.state).map(([key, value]) => {
       arrData.push(value);
+      return arrData
     });
     for (let value of Object.values(arrData)) {
       if (value == null || String(value).length === 0) {
@@ -60,19 +59,28 @@ class _AddAccountPage extends React.Component {
     }
     if (!(this.validEmail(this.state.email))) {
       toast.error('please make sure your email currect ')
+      toast.clearWaitingQueue();
+
       return
     }
+    if (!(this.validPassword(this.state.password))) {
+      toast.warning("Your password must be have at least 1 uppercase & 1 lowercase character 1 number")
+      toast.clearWaitingQueue();
 
+      return;
+    }
 
-    if ((this.state.password !== this.state.passwordConfirm) && this.state.password.length > 6) {
+    if (this.state.password !== this.state.passwordConfirm) {
       toast.error('please make sure your password match');
+      toast.clearWaitingQueue();
+
       return;
     }
 
     //async 
-    this.getUserByEmail().then((response) => {
+    getUserByEmail(email).then((response) => {
       if (response.data === null) {
-        this.registerUserToDB().then(
+        registerUserToDB(this.state).then(
           (response) => {
             console.log(response);
           },
@@ -91,31 +99,18 @@ class _AddAccountPage extends React.Component {
 
   }
 
+  validPassword(password) {
+    var re = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+    return re.test(password)
+  }
+
   validEmail(email) {
     var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(email);
   };
-  getUserByEmail() {
-    return axios
-      .get('http://localhost:5000/users/find/' + this.state.email, {
-      })
-  }
 
-  registerUserToDB() {
-    console.log(this.state)
-    return axios
-      .post('http://localhost:5000/users/add', {
 
-        firstName: this.state.firstName,
-        lastName: this.state.lastName,
-        email: this.state.email,
-        password: this.state.password,
-        team: this.state.team,
-        permission: this.state.permission,
 
-      })
-
-  }
 
   render() {
     const teams = this.state.allTeam;
@@ -219,6 +214,8 @@ class _AddAccountPage extends React.Component {
             </form>
           </div>
         </Fragment>
+        <ToastContainer limit={3} />
+
       </>
     );
   }

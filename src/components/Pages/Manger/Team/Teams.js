@@ -19,6 +19,10 @@ import { getAllTeams, removeTeam } from '../../../until/httpService'
 class _Teams extends Component {
     constructor(props) {
         super(props)
+        const user = JSON.parse(sessionStorage.getItem("loginUser"))
+        if (!user) {
+            this.props.history.push('/')
+        }
         this.state = {
             teams: [],
             teamSelected: [],

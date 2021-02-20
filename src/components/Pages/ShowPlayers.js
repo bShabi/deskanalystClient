@@ -3,6 +3,8 @@ import { Redirect } from 'react-router'
 import '../css/ShowPlayers.css'
 import axios from 'axios'
 import { toast } from 'react-toastify';
+import Stepper from 'react-stepper-horizontal'
+
 
 
 class ShowPlayers extends Component {
@@ -32,6 +34,7 @@ class ShowPlayers extends Component {
     this.calcStats = this.calcStats.bind(this)
     this.replaceKeys = this.replaceKeys.bind(this)
     this.savePlayer = this.savePlayer.bind(this)
+
     this.calcStats(this.state.players)
   }
   componentDidMount() {
@@ -146,7 +149,7 @@ class ShowPlayers extends Component {
         .then(
           (response) => {
             console.log(response)
-            this.props.history.push('/Match')
+            this.props.history.push('/Games')
           },
           (error) => {
             console.log(error);
@@ -179,6 +182,10 @@ class ShowPlayers extends Component {
 
     return (
       <Fragment>
+        <section>
+          <Stepper steps={[{ title: 'Insert deitals form Game' }, { title: 'Upload csv File' }, { title: 'Insert player deitals ' }]} activeStep={2} />
+
+        </section>
         <div>
           <h1>{myTeamName} - {opponentTeam} </h1> <h3>Date: {gameDate} score: {myTeamFinalScore} - {anotherFinalScore}</h3>
         </div>
@@ -202,8 +209,8 @@ class ShowPlayers extends Component {
             {players.map((player) => (
 
               <tr key={player["Tracker"]}>
-                <td className="tooltip" >{player["First Name"]}</td>
-                <td className="tooltip" > {player["Last Name"]}</td>
+                <td className="tooltip1 " >{player["First Name"]}</td>
+                <td className="tooltip1" > {player["Last Name"]}</td>
                 <td>
                   <select
                     defaultValue={"mc"}
@@ -220,11 +227,11 @@ class ShowPlayers extends Component {
                     ))}
                   </select>
                 </td>
-                <td className="tooltip" > {player["Time on Pitch (mins)"]}</td>
-                <td className="tooltip" > {player["Distance (km)"]} <span className="tooltiptext" > Half(1): {player["Distance 1st Half (km)"]} Half(2) {player["Distance 2nd Half (km)"]}</span></td>
-                <td className="tooltip" > {player["Progressive Sprints"]}<span className="tooltiptext" >Half(1): {player["Progressive Sprints 1st Half"]}  Half(2) {player["Progressive Sprints 2nd Half"]}</span></td>
-                <td className="tooltip" > {player["Sprints"]} <span className="tooltiptext" > Half(1): {player["Sprints 1st Half"]} Half(2) {player["Sprints 2nd Half"]}</span></td>
-                <td className="tooltip" > {player["Top Speed (km/h)"]}</td>
+                <td className="tooltip1" > {player["Time on Pitch (mins)"]}</td>
+                <td className="tooltip1" > {player["Distance (km)"]} <span className="tooltiptext" > Half(1): {player["Distance 1st Half (km)"]} Half(2) {player["Distance 2nd Half (km)"]}</span></td>
+                <td className="tooltip1" > {player["Progressive Sprints"]}<span className="tooltiptext" >Half(1): {player["Progressive Sprints 1st Half"]}  Half(2) {player["Progressive Sprints 2nd Half"]}</span></td>
+                <td className="tooltip1" > {player["Sprints"]} <span className="tooltiptext" > Half(1): {player["Sprints 1st Half"]} Half(2) {player["Sprints 2nd Half"]}</span></td>
+                <td className="tooltip1" > {player["Top Speed (km/h)"]}</td>
 
                 <td style={{ width: '20%' }}>
 
@@ -234,13 +241,13 @@ class ShowPlayers extends Component {
               </tr>
             ))}
             <tr>
-              <td colspan="4">Total AVG</td>
-              <td>{avgStats.distance}</td>
-              <td>{avgStats.progressive_Sprints}</td>
-              <td>{avgStats.sprints}</td>
-              <td>{avgStats.top_Speed}</td>
+              <td className="totalStats" colspan="4">Total AVG</td>
+              <td className="totalStats">{avgStats.distance}</td>
+              <td className="totalStats">{avgStats.progressive_Sprints}</td>
+              <td className="totalStats">{avgStats.sprints}</td>
+              <td className="totalStats">{avgStats.top_Speed}</td>
               <td>
-                <button onClick={() => this.handleSubmit()}>Save stats game</button>
+                <button className="btn btn-primary" onClick={() => this.handleSubmit()}>Save</button>
 
               </td>
             </tr>
